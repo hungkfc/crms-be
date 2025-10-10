@@ -1,8 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\File;
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
+$routeFiles = File::allFiles(__DIR__ . '/apiRoutes');
+
+foreach ($routeFiles as $file) {
+    if ($file->getExtension() === 'php') {
+        require_once $file->getPathname();
+    }
+}
